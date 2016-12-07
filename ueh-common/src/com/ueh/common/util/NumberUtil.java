@@ -13,7 +13,7 @@ public class NumberUtil {
 	
 	public static String floatPoint2(float f)
 	{
-		DecimalFormat decimalFormat=new DecimalFormat(".00");//鏋勯�鏂规硶鐨勫瓧绗︽牸寮忚繖閲屽鏋滃皬鏁颁笉瓒�浣�浼氫互0琛ヨ冻.
+		DecimalFormat decimalFormat=new DecimalFormat(".00");//
 		return decimalFormat.format(f);
 	}
 	public static void main(String[] args)
