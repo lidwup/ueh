@@ -10,7 +10,7 @@ import java.util.Map;
  * @author
  */
 @SuppressWarnings("unused")
-public final class AppConstants {
+public final class Const {
 					
 	public static void put(final String storeName,Object key,String value){
 		dict.put(storeName, key, value);
@@ -45,41 +45,45 @@ public final class AppConstants {
 		jsonb.append("]");
 		return jsonb.toString();
 	}
-	
+	public static final String CUSTOM_CODE="CUSTOM_CODE";//客户编码
 	public static final String BP_METHOD = "BpMethod";//采购方式
 	public static Dict dict=new Dict();
 	static{
-		System.out.print("字典初始化...");
+		System.out.println("字典初始化...");
+		put(CUSTOM_CODE, 0, "custom001");
 		// 采购方式
-		put(BP_METHOD, 0, "公开招标");
-		put(BP_METHOD, 1, "邀请招标");
-		put(BP_METHOD, 2, "竞争性谈判");
-		put(BP_METHOD, 3, "单一来源采购");
-		put(BP_METHOD, 4, "询价");
+		//put(, 0, "公开招标");
+		;
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 1, "邀请招标");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 2, "竞争性谈判");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 3, "单一来源采购");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 4, "询价");
 		
 		/**
 		 * 使用方式
 		 */
-		String xx=AppConstants.get(AppConstants.BP_METHOD,1);
+		String xx=Const.get(Const.BP_METHOD,1);
 		
-		Integer key=AppConstants.getKey(AppConstants.BP_METHOD, "邀请招标");		
+		Integer key=Const.getKey(Const.BP_METHOD, "邀请招标");		
 		
-		Map<Object,String> methods= AppConstants.get(AppConstants.BP_METHOD);
+		Map<Object,String> methods= Const.get(Const.BP_METHOD);
 		
-		Collection<String> methodNames= AppConstants.getValues(AppConstants.BP_METHOD);
+		Collection<String> methodNames= Const.getValues(Const.BP_METHOD);
 	}
 	
 	
 	
 	@SuppressWarnings("rawtypes")
 	public static void main(String[] args){
-		Map x=AppConstants.get(AppConstants.BP_METHOD);
+		Map x=Const.get(BP_METHOD+getKey(CUSTOM_CODE,"custom001"));
 		for(Object key:x.keySet())
 		{
 			System.out.println(x.get(key));
 		}
 		System.out.println("##############");
-		String json=AppConstants.getValuesJsonBy(AppConstants.BP_METHOD, "name");
+		//String json=AppConstants.getValuesJsonBy(AppConstants.BP_METHOD, "name");
+		//System.out.println("json:"+json);
+		String json=Const.getValuesJsonBy(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "name");
 		System.out.println("json:"+json);
 	}
 	
