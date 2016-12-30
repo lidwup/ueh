@@ -45,6 +45,7 @@ public final class Const {
 		jsonb.append("]");
 		return jsonb.toString();
 	}
+	public static final String TMP_PATH="C:\\TMP";//临时目录
 	public static final String CUSTOM_CODE="CUSTOM_CODE";//客户编码
 	public static final String BP_METHOD = "BpMethod";//采购方式
 	public static Dict dict=new Dict();
