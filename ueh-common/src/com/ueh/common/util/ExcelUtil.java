@@ -121,9 +121,9 @@ public class ExcelUtil{
                          value = "";
                      }
                   }
-                  if (columnIndex == 0 && value.trim().equals("")) {
-                     break;
-                  }
+//                  if (columnIndex == 0 && value.trim().equals("")) {
+//                     break;
+//                  }
                   values[columnIndex] = rightTrim(value);
                   hasValue = true;
               }
