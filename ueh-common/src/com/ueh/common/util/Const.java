@@ -46,19 +46,25 @@ public final class Const {
 		return jsonb.toString();
 	}
 	public static final String TMP_PATH="C:\\TMP";//临时目录
+	public static final String BASE_PATH="C:\\files";//文件根目录
 	public static final String CUSTOM_CODE="CUSTOM_CODE";//客户编码
 	public static final String BP_METHOD = "BpMethod";//采购方式
+	public static final String FILE_TYPE="FILE_TYPE";//文件类型（招标文件、投标文件等）
+	public static final String FILE_ZBWJ="ZBWJ";
+	public static final String FILE_TBWJ="TBWJ";
 	public static Dict dict=new Dict();
 	static{
 		System.out.println("字典初始化...");
 		put(CUSTOM_CODE, 0, "custom001");
-		// 采购方式
-		//put(, 0, "公开招标");
-		;
+		// 采购方式（按客户编码的不同，分为不同客户的招标方式字典）
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 0, "公开招标");
 		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 1, "邀请招标");
 		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 2, "竞争性谈判");
 		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 3, "单一来源采购");
 		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 4, "询价");
+		
+		put(FILE_TYPE, 1, FILE_ZBWJ);//招标文件
+		put(FILE_TYPE, 2, FILE_TBWJ);//投标文件
 		
 		/**
 		 * 使用方式
