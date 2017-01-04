@@ -52,6 +52,7 @@ public final class Const {
 	public static final String FILE_TYPE="FILE_TYPE";//文件类型（招标文件、投标文件等）
 	public static final String FILE_ZBWJ="ZBWJ";
 	public static final String FILE_TBWJ="TBWJ";
+	public static final String SOURCE_TYPE="SOURCE_TYPE";//来源类型
 	public static Dict dict=new Dict();
 	static{
 		System.out.println("字典初始化...");
@@ -65,6 +66,13 @@ public final class Const {
 		
 		put(FILE_TYPE, 1, FILE_ZBWJ);//招标文件
 		put(FILE_TYPE, 2, FILE_TBWJ);//投标文件
+		
+		put(SOURCE_TYPE, "PJ", "继承项目");
+		put(SOURCE_TYPE, "PA", "继承包");
+		put(SOURCE_TYPE, "CN", "克隆同级");
+		put(SOURCE_TYPE, "OWN", "自己填写");
+		put(SOURCE_TYPE, "DOWN", "下载");
+		put(SOURCE_TYPE, "IMP", "导入");
 		
 		/**
 		 * 使用方式
