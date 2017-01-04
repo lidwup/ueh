@@ -34,12 +34,13 @@ public final class Const {
 		return dict.getValues(mapName);
 	}
 	
-	public static String getValuesJsonBy(String mapName,String name){
+	public static String getValuesJsonBy(String mapName){
 		StringBuffer jsonb=new StringBuffer("[");
 		int length=jsonb.length();
-		Collection<String> values=dict.getValues(mapName);
-		for(String value:values){
-			jsonb.append("{\""+name+"\":\""+value+"\"},");
+		Map dict=get(mapName);
+		for(Object key:dict.keySet()){
+			jsonb.append("{\"id\":\""+key+"\",");
+			jsonb.append("\"name\":\""+dict.get(key)+"\"},");
 		}
 		if(jsonb.length()!=length){
 			jsonb.deleteCharAt(jsonb.length()-1);
@@ -85,11 +86,11 @@ public final class Const {
 		System.out.println("字典初始化...");
 		put(CUSTOM_CODE, 0, "custom001");
 		// 采购方式（按客户编码的不同，分为不同客户的招标方式字典）
-		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 0, "公开招标");
-		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 1, "邀请招标");
-		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 2, "竞争性谈判");
-		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 3, "单一来源采购");
-		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), 4, "询价");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "公开招标", "公开招标");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "邀请招标", "邀请招标");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "竞争性谈判", "竞争性谈判");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "单一来源采购", "单一来源采购");
+		put(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "询价", "询价");
 		
 		put(FILE_TYPE, 1, FILE_ZBWJ);//招标文件
 		put(FILE_TYPE, 2, FILE_TBWJ);//投标文件
@@ -125,7 +126,7 @@ public final class Const {
 		System.out.println("##############");
 		//String json=AppConstants.getValuesJsonBy(AppConstants.BP_METHOD, "name");
 		//System.out.println("json:"+json);
-		String json=Const.getValuesJsonBy(BP_METHOD+getKey(CUSTOM_CODE,"custom001"), "name");
+		String json=Const.getValuesJsonBy(BP_METHOD+getKey(CUSTOM_CODE,"custom001"));
 		System.out.println("json:"+json);
 	}
 	
