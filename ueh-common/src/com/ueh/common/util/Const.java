@@ -4,6 +4,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gson.Gson;
+
 /**
  * 
  * 
@@ -45,6 +47,31 @@ public final class Const {
 		jsonb.append("]");
 		return jsonb.toString();
 	}
+	
+	public static String fillValuesToResultJson(String jsonStr,String mapName,String keyName,String valueName){
+		Gson gson=new Gson();
+		Map dict=get(mapName);
+		Map jsonMap=gson.fromJson(jsonStr, Map.class);
+		List<Map> result=(List<Map>) jsonMap.get("result");
+		result=fillValueToJsonList(result,dict,keyName,valueName);
+		jsonMap.put("result", result);
+		String json=gson.toJson(jsonMap);	
+		return json;
+	}
+	
+	private static List<Map> fillValueToJsonList(List<Map> list,Map dict,String keyName,String valueName){
+		List<Map> result=list;
+		for(Map jmap:result){
+			Object key=jmap.get(keyName);
+			jmap.put(valueName, dict.get(key));
+			if(jmap.containsKey("children")){
+				List<Map> children=(List<Map>) jmap.get("children");
+				return fillValueToJsonList(children,dict,keyName,valueName);
+			}				
+		}
+		return result;
+	}
+	
 	public static final String TMP_PATH="C:\\TMP";//临时目录
 	public static final String BASE_PATH="C:\\files";//文件根目录
 	public static final String CUSTOM_CODE="CUSTOM_CODE";//客户编码
