@@ -1,5 +1,7 @@
 package com.ueh.common.util;
 
+import java.util.Random;
+
 import com.jacob.activeX.ActiveXComponent;
 import com.jacob.com.ComThread;
 import com.jacob.com.Dispatch;
@@ -20,54 +22,7 @@ public class DocumentUtil {
     private static final int EXCEL_43 = 43;
     private static final int EXCEL_2003 = 51;
 
-
-    /**
-     * Excel文档转换
-     * 
-     * @param inputFile
-     * @param pdfFile
-     * @author SHANHY
-     */
-    private static boolean excel2PDF(String inputFile, String pdfFile) {
-        ComThread.InitSTA();
-
-        long start = System.currentTimeMillis();
-        ActiveXComponent app = null;
-        Dispatch excel = null;
-        try {
-            app = new ActiveXComponent("Excel.Application");// 创建一个PPT对象
-            app.setProperty("Visible", new Variant(false)); // 不可见打开
-            // app.setProperty("AutomationSecurity", new Variant(3)); // 禁用宏
-            Dispatch excels = app.getProperty("Workbooks").toDispatch();// 获取文挡属性
-
-            System.out.println("打开文档 >>> " + inputFile);
-            // 调用Documents对象中Open方法打开文档，并返回打开的文档对象Document
-            excel = Dispatch.call(excels, "Open", inputFile, false, true).toDispatch();
-            // 调用Document对象方法，将文档保存为pdf格式
-            System.out.println("转换文档 [" + inputFile + "] >>> [" + pdfFile + "]");
-            // Excel 不能调用SaveAs方法
-         //   Dispatch.call(excel, "ExportAsFixedFormat", xlFormatPDF, pdfFile);
-            Dispatch.call(excel, "SaveAs", pdfFile);  
-            long end = System.currentTimeMillis();
-
-            System.out.println("用时：" + (end - start) + "ms.");
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("========Error:文档转换失败：" + e.getMessage());
-        } finally {
-            Dispatch.call(excel, "Close", false);
-            System.out.println("关闭文档");
-            if (app != null)
-                app.invoke("Quit", new Variant[] {});
-        }
-        ComThread.Release();
-        ComThread.quitMainSTA();
-        return false;
-    }
-
-
-	public static void word2PDF(String inputFile,String pdfFile){ 
+	public static void wordToPdf(String inputFile,String pdfFile){ 
         //打开word应用程序 
        ActiveXComponent app = new ActiveXComponent("Word.Application"); 
         //设置word不可见，否则会弹出word界面 
@@ -84,8 +39,6 @@ public class DocumentUtil {
         //关闭word应用程序 
        app.invoke("Quit", 0); 
     } 
-
-
 	
 		/**
 		 * WORD转HTML
@@ -210,10 +163,39 @@ public class DocumentUtil {
 			}
 		}
 		
+	public static void excelToPdf(String xls, String pdf) {
+		ActiveXComponent app = new ActiveXComponent("Excel.Application");
+		try {
+			app.setProperty("Visible", false);
+			Dispatch workbooks = app.getProperty("Workbooks").toDispatch();
+			System.out.println("opening document:" + xls);
+			Dispatch workbook = Dispatch.invoke(workbooks, "Open", Dispatch.Method,
+					new Object[] { xls, new Variant(false), new Variant(false) }, new int[3]).toDispatch();
+
+			Dispatch.invoke(workbook, "SaveAs", Dispatch.Method,
+					new Object[] { pdf, new Variant(57), new Variant(false), new Variant(57), new Variant(57),
+							new Variant(false), new Variant(true), new Variant(57), new Variant(true),
+							new Variant(true), new Variant(true) },
+					new int[1]);
+			Variant f = new Variant(false);
+			Dispatch.call(workbook, "Close", f);
+		} catch (Exception e) {
+			System.out.println("========Error:Operation fail:" + e.getMessage());
+		} finally {
+			if (app != null) {
+				app.invoke("Quit", new Variant[] {});
+			}
+			ComThread.Release();
+		}
+	}
+
+		
 		public static void main(String[] args) {
 //			excelToHtml("E:\\test.xls","E:\\" + new Random().nextInt(1000) + ".html");
-			xlsToXlsx("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.xlsx");
-//			word2PDF("D:\\BIOS\\web端系统集成说明.docx","D:\\BIOS\\web端系统集成说明.pdf");
-//			excel2PDF("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.xlsx");
+//			xlsToXlsx("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.xlsx");
+//			excelToPdf("D:\\BIOS\\工作明细-主系统.xlsx","D:\\BIOS\\工作明细-主系统1.pdf");
+//			excelToPdf("D:\\BIOS\\工作明细-主系统.xlsx","D:\\BIOS\\工作明细-主系统1.pdf");
+//			wordToPdf("D:\\BIOS\\web端系统集成说明.docx","D:\\BIOS\\web端系统集成说明.pdf");
+			excelToHtml("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.html");
 		}
 }
