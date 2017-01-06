@@ -81,6 +81,7 @@ public final class Const {
 	public static final String FILE_ZBWJ="ZBWJ";
 	public static final String FILE_TBWJ="TBWJ";
 	public static final String SOURCE_TYPE="SOURCE_TYPE";//来源类型
+	public static final String BE_TYPE="BE_TYPE";//评标类型
 	public static Dict dict=new Dict();
 	static{
 		System.out.println("字典初始化...");
@@ -101,6 +102,10 @@ public final class Const {
 		put(SOURCE_TYPE, "OWN", "自己填写");
 		put(SOURCE_TYPE, "DOWN", "下载");
 		put(SOURCE_TYPE, "IMP", "导入");
+		
+		put(BE_TYPE, "技术", "技术");
+		put(BE_TYPE, "商务", "商务");
+		put(BE_TYPE, "无区分", "无区分");
 		
 		/**
 		 * 使用方式
