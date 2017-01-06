@@ -21,6 +21,8 @@ public class DocumentUtil {
     private static final int EXCEL_XML = 46;  
     private static final int EXCEL_43 = 43;
     private static final int EXCEL_2003 = 51;
+    
+    private static final int xlWebArchive = 45; 
 
 	public static void wordToPdf(String inputFile,String pdfFile){ 
         //打开word应用程序 
@@ -140,6 +142,33 @@ public class DocumentUtil {
 			}
 		}
 		
+		public static void excelToMht(String xlsfile, String xmlfile) {
+			// 初始化
+			ComThread.InitSTA();
+			ActiveXComponent app = new ActiveXComponent("Excel.Application"); // 启动Excel
+			try {
+				app.setProperty("Visible", new Variant(false));
+				Dispatch excels = app.getProperty("Workbooks").toDispatch();
+				Dispatch excel = Dispatch.invoke(
+						excels,
+						"Open",
+						Dispatch.Method,
+						new Object[] { xlsfile, new Variant(false),
+								new Variant(true) }, new int[1]).toDispatch();
+				Dispatch.invoke(excel, "SaveAs", Dispatch.Method, new Object[] {
+						xmlfile, new Variant(xlWebArchive) }, new int[1]);
+				Variant f = new Variant(false);
+				Dispatch.call(excel, "Close", f);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				app.invoke("Quit", new Variant[] {});
+				ComThread.Release();
+			}
+		}
+		
+
+		
 		public static void xlsToXlsx(String xlsfile, String xlsxfile) {
 			// 初始化
 			ComThread.InitSTA();
@@ -172,13 +201,18 @@ public class DocumentUtil {
 			Dispatch workbooks = app.getProperty("Workbooks").toDispatch();
 			System.out.println("opening document:" + xls);
 			Dispatch workbook = Dispatch.invoke(workbooks, "Open", Dispatch.Method,
-					new Object[] { xls, new Variant(false), new Variant(false) }, new int[3]).toDispatch();
+					new Object[] { xls, new Variant(false), new Variant(false) }, new int[3]).toDispatch();			
+			Dispatch.invoke(workbook,"ExportAsFixedFormat",Dispatch.Method,new Object[]{  
+					            new Variant(0), //PDF格式=0  
+					            pdf,  
+					            new Variant(0)  //0=标准 (生成的PDF图片不会变模糊) 1=最小文件 (生成的PDF图片糊的一塌糊涂)  
+					        },new int[1]);  
 
-			Dispatch.invoke(workbook, "SaveAs", Dispatch.Method,
-					new Object[] { pdf, new Variant(57), new Variant(false), new Variant(57), new Variant(57),
-							new Variant(false), new Variant(true), new Variant(57), new Variant(true),
-							new Variant(true), new Variant(true) },
-					new int[1]);
+//			Dispatch.invoke(workbook, "SaveAs", Dispatch.Method,
+//					new Object[] { pdf, new Variant(57), new Variant(false), new Variant(57), new Variant(57),
+//							new Variant(false), new Variant(true), new Variant(57), new Variant(true),
+//							new Variant(true), new Variant(true) },
+//					new int[1]);
 			Variant f = new Variant(false);
 			Dispatch.call(workbook, "Close", f);
 		} catch (Exception e) {
@@ -196,8 +230,9 @@ public class DocumentUtil {
 //			excelToHtml("E:\\test.xls","E:\\" + new Random().nextInt(1000) + ".html");
 //			xlsToXlsx("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.xlsx");
 //			excelToPdf("D:\\BIOS\\工作明细-主系统.xlsx","D:\\BIOS\\工作明细-主系统1.pdf");
-//			excelToPdf("D:\\BIOS\\工作明细-主系统.xlsx","D:\\BIOS\\工作明细-主系统1.pdf");
-			wordToPdf("D:\\BIOS\\web端系统集成说明.docx","D:\\BIOS\\web端系统集成说明1.pdf");
+			excelToPdf("D:\\BIOS\\工作明细-主系统.xlsx","D:\\BIOS\\工作明细-主系统1.pdf");
+//			wordToPdf("D:\\BIOS\\web端系统集成说明.docx","D:\\BIOS\\web端系统集成说明1.pdf");
 //			excelToHtml("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.html");
+//			excelToMht("D:\\BIOS\\工作明细-主系统.xls","D:\\BIOS\\工作明细-主系统.mht");
 		}
 }
