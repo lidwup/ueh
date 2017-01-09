@@ -9,12 +9,13 @@ public class PageInfo implements Serializable {
   
 	private static final long serialVersionUID = 5151521061950048117L;
 
-	public PageInfo(int totalCount,int currPageNum,int pageSize)
+	public PageInfo(int totalCount,int currPageNum,int pageSize,List<Map<String,Object>> list)
 	{
-		 
+		    currPageNum=currPageNum==0?1:currPageNum;
 			this.totalCount=totalCount;
 			this.currPageNum=currPageNum;
 			this.pageSize=pageSize;
+			this.list=list;
 			
 			this.totalPageCount=totalCount/pageSize;
 			if(totalCount%pageSize!=0)
@@ -22,7 +23,7 @@ public class PageInfo implements Serializable {
 				this.totalPageCount++;
 			} 
 			
-			if(currPageNum>1)
+			if(currPageNum>=2)
 			{
 				prePageNum=currPageNum-1;
 			}
@@ -33,8 +34,8 @@ public class PageInfo implements Serializable {
 			
 			if(currPageNum>=this.totalPageCount)
 			{
-				this.nextPageNum=-1;
-				this.currPageNum=this.totalPageCount;
+				this.nextPageNum=1;
+				this.currPageNum=totalPageCount==0?1:totalPageCount;
 			}
 			else
 			{
